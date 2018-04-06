@@ -1,22 +1,22 @@
 {
-  "name": "fraktal",
-  "version": "0.0.1",
-  "description": "Podcast Manager in Electron",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/SirPacker/fraktal.git"
-  },
-  "author": "SirPacker",
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/SirPacker/fraktal/issues"
-  },
-  "homepage": "https://github.com/SirPacker/fraktal#readme",
-  "dependencies": {
-    "electron": "^1.8.4"
-  }
+    "name": "fraktal",
+    "version": "0.0.1",
+    "description": "Podcast Manager in Electron",
+    "main": "index.js",
+    "scripts": {
+        "start": "electron ."
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/SirPacker/fraktal.git"
+    },
+    "author": "SirPacker",
+    "license": "Apache-2.0",
+    "bugs": {
+        "url": "https://github.com/SirPacker/fraktal/issues"
+    },
+    "homepage": "https://github.com/SirPacker/fraktal#readme",
+    "dependencies": {
+        "electron": "^1.8.4"
+    }
 }
