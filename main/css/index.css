@@ -19,10 +19,6 @@ body {
     cursor: pointer;
 }
 
-.collapse[aria-expanded=true] {
-    display: block;
-}
-
 .cover {
     position: absolute;
     z-index: 9999;

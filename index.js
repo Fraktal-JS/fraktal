@@ -12,6 +12,8 @@ function create() {
         height: 516
     });
 
+    window.maximize();
+
     window.loadURL(url.format({
         pathname: path.join(__dirname, 'main', 'index.html'),
         protocol: 'file:',

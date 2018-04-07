@@ -13,86 +13,117 @@
     <link rel="stylesheet" type="text/css" media="screen" href="css/index.css" />
 
     <script src="https://code.jquery.com/jquery-3.3.1.js" onload="window.$ = window.jQuery = module.exports;"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="https://use.fontawesome.com/releases/v5.0.9/js/all.js"></script>
+
     <script>
         const { BrowserWindow } = require('electron').remote;
         const bWindow = BrowserWindow.getFocusedWindow();
+        setTimeout(() => $(".cover").fadeOut(2000), 500);
     </script>
 </head>
 
 <body>
     <img class="cover" src="assets/load.jpg">
 
-    <div>
-        <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
-            <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Fraktal</a>
-            <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
-            <ul class="navbar-nav px-2">
-                <li class="nav-item text-nowrap">
-                    <a class="minmaxclose" onclick="bWindow.minimize();">
-                        <i class="fas fa-minus"></i>
+    <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
+        <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Fraktal</a>
+        <input class="form-control form-control-dark w-100" type="text" placeholder="Search for new podcast" aria-label="Search">
+        <ul class="navbar-nav px-2">
+            <li class="nav-item text-nowrap">
+                <a class="minmaxclose" onclick="bWindow.minimize();">
+                    <i class="fas fa-minus"></i>
+                </a>
+            </li>
+        </ul>
+        <ul class="navbar-nav px-2">
+            <li class="nav-item text-nowrap">
+                <a class="minmaxclose" onclick="bWindow.isMaximized() ? bWindow.unmaximize() : bWindow.maximize();">
+                    <i class="far fa-square"></i>
+                </a>
+            </li>
+        </ul>
+        <ul class="navbar-nav px-2">
+            <li class="nav-item text-nowrap">
+                <a class="minmaxclose" onclick="bWindow.close();">
+                    <i class="fas fa-times"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+                <div class="sidebar-sticky">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-toggle="modal" data-target="#podcast-add">
+                                <span data-feather="file"></span>
+                                Add Podcast
+                            </a>
+                        </li>
+                    </ul>
+
+                    <a style="text-decoration: none;" data-toggle="collapse" href="#podcasts">
+                        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                            <span>Podcasts</span>
+                            <i class="fas fa-plus-circle"></i>
+                        </h6>
                     </a>
-                </li>
-            </ul>
-            <ul class="navbar-nav px-2">
-                <li class="nav-item text-nowrap">
-                    <a class="minmaxclose" onclick="bWindow.isMaximized() ? bWindow.unmaximize() : bWindow.maximize();">
-                        <i class="far fa-square"></i>
-                    </a>
-                </li>
-            </ul>
-            <ul class="navbar-nav px-2">
-                <li class="nav-item text-nowrap">
-                    <a class="minmaxclose" onclick="bWindow.close();">
-                        <i class="fas fa-times"></i>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-        <div class="container-fluid">
-            <div class="row">
-                <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-                    <div class="sidebar-sticky">
-                        <ul class="nav flex-column">
+                    <div id="podcasts" class="collapse show">
+                        <ul class="nav flex-column mb-2">
                             <li class="nav-item">
                                 <a class="nav-link" href="#">
-                                    <span data-feather="file"></span>
-                                    Add Podcast
+                                    <span data-feather="file-text"></span>
+                                    Blah
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    <span data-feather="file-text"></span>
+                                    Blah blah
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    <span data-feather="file-text"></span>
+                                    Blah blah blah
                                 </a>
                             </li>
                         </ul>
-
-                        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-                            <span>Podcasts</span>
-                            <a class="d-flex align-items-center text-muted" data-toggle="collapse" href="#podcasts">
-                                <i class="fas fa-plus-circle"></i>
-                            </a>
-                        </h6>
-                        <div id="podcasts" class="collapse in" aria-expanded=true>
-                            <ul class="nav flex-column mb-2">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">
-                                        <span data-feather="file-text"></span>
-                                        Blah
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">
-                                        <span data-feather="file-text"></span>
-                                        Blah blah
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">
-                                        <span data-feather="file-text"></span>
-                                        Blah blah blah
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
                     </div>
-                </nav>
+                </div>
+            </nav>
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+                <h3>Hello there!</h3>
+                <p>Welcome to Fraktal, the new and soon-to-be best podcast management application. You can use this to keep track of and download your favorite podcasts.<p>
+            </main>
+        </div>
+    </div>
+
+    <div class="modal fade" id="podcast-add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Podcast to List</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="podcast-url" class="col-form-label">Podcast URL</label>
+                            <input type="text" class="form-control" id="podcast-url">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary">Add Podcast</button>
+                </div>
             </div>
         </div>
     </div>
@@ -100,7 +131,3 @@
 </body>
 
 </html>
-
-<script>
-    setTimeout(() => $(".cover").fadeOut(2000), 500);
-</script>
