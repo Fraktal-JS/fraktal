@@ -2,23 +2,64 @@
     "name": "fraktal",
     "version": "0.0.1",
     "description": "Podcast Manager in Electron",
-    "main": "index.js",
+    "main": "app/index.js",
     "scripts": {
-        "start": "electron .",
-        "release": "build"
+        "start": "electron app",
+        "postinstall": "electron-builder install-app-deps",
+        "pack": "electron-builder --dir",
+        "release": "build -p onTag"
     },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/SirPacker/fraktal.git"
     },
-    "author": "SirPacker",
+    "author": {
+        "name" : "SirPacker",
+        "email" : "<EMAIL>"
+     },
     "license": "Apache-2.0",
     "bugs": {
         "url": "https://github.com/SirPacker/fraktal/issues"
     },
     "homepage": "https://github.com/SirPacker/fraktal#readme",
     "build": {
-        "appId": "com.cheezewerks.fraktal"
+        "appId": "com.cheezewerks.fraktal",
+        "productName": "Fraktal",
+        "files": [
+            "app",
+            "package.json"
+        ],
+        "mac": {
+            "category": "<MAC_CATEGORY_TYPE>",
+            "target": [
+                "dmg"
+            ]
+        },
+        "linux": {
+            "category": "<LINUX_CATEGORY_NAME>",
+            "target": [
+                "AppImage",
+                "deb"
+            ]
+        },
+        "dmg": {
+            "contents": [
+                {
+                    "x": 110,
+                    "y": 190
+                },
+                {
+                    "x": 420,
+                    "y": 185,
+                    "type": "link",
+                    "path": "/Applications"
+                }
+            ],
+            "window": {
+                "width": 540,
+                "height": 380
+            }
+        }
     },
     "devDependencies": {
         "electron": "^1.8.4",
