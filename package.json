@@ -4,7 +4,8 @@
     "description": "Podcast Manager in Electron",
     "main": "index.js",
     "scripts": {
-        "start": "electron ."
+        "start": "electron .",
+        "release": "build"
     },
     "repository": {
         "type": "git",
@@ -18,5 +19,9 @@
     "homepage": "https://github.com/SirPacker/fraktal#readme",
     "dependencies": {
         "electron": "^1.8.4"
+    },
+    "build": {
+        "appId": "de.hendrikwallbaum.blankUpElectron",
+        "app-category-type": "public.app-category.productivity"
     }
 }
