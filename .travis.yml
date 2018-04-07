@@ -1,46 +1,40 @@
 sudo: required
 dist: trusty
-
 matrix:
   include:
   - os: osx
     osx_image: xcode9.2
     language: node_js
-    node_js: "9"
+    node_js: '9'
   - os: linux
     services: docker
     language: node_js
-    node_js: "9"
-
+    node_js: '9'
 cache:
   directories:
   - node_modules
   - app/node_modules
   - "$HOME/.electron"
   - "$HOME/.cache"
-
 addons:
   apt:
     packages:
     - libgnome-keyring-dev
     - icnsutils
-
 before_install:
 - |
-    if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-      echo -e "\e[36m\e[1m—————> BUILD: Installing dependencies for Linux\n"
-      sudo apt-get install --no-install-recommends -y icnsutils graphicsmagick xz-utils;
-    fi
-
+  if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+    echo -e "\e[36m\e[1m—————> BUILD: Installing dependencies for Linux\n"
+    sudo apt-get install --no-install-recommends -y icnsutils graphicsmagick xz-utils;
+  fi
 install: npm i
-
 script:
-- ./build/travis.sh
-
-
+- "./build/travis.sh"
 before_cache:
-  - rm -rf $HOME/.cache/electron-builder/wine
-
+- rm -rf $HOME/.cache/electron-builder/wine
 branches:
   safelist:
   - "/^v\\d+\\.\\d+(\\.\\d+)?(-\\S*)?$/"
+env:
+  global:
+    secure: iHDjOrW2k38J6QMkEyFUP5leZaZ8lwi0jpsUP8oIYdj5VqBfuPxb/Pu9OXW3tgKQRbdJG3eOeakP3w3Q+QKZQNA/iorUdY2tVdAdLequEq96NTym0f1JYDNc8N5WqWMXYdTqVpTPM3rAU5MNVmF40k8yLZwQZ+0QAjZ4WeNfA8ux6E1JEVZs0GEY+J4iE2wr11Sgnm7okL/yCSsi8bFVGx9h8J/cqh6JGS2w9A2xQbZRJs/eGXWOYJsU7s6G6Py5BzDbneOQ7yKgtasb5o/Q5t2tqXjMHRDuLHdoV/JK93HGrLUUrW90XiDU2jZ15ccjNOe1Jb91Cf9GxaZUwz8o/GILX8qWv7Tk7kkDBEp4RcTXJR7Qmbw5MEmA4rPgmFBW6+N8xKI9HRHScH9E6itvJmUAlVIZ2d96UYmESmgg/x4irhHjFVBy1HizYIBEcD6XhAHAmwJZnpjie3OKcmQMsIhUYGVXH467Pclxwesyr0hk6rwZFXFP7FK7+eBVYYuwGNOUlUfSoL5aAtlqZjAlzTZA1Ej2JgYS8ysL7dlMqKdoT2rdV1asIUBgdu42CEuCagwltGa/erpYZPSfyLsn8Cn4zfe1nAH5fXf94+41ByyvGtrTxHCtn4fe9JlN/0Q6Y5e6wkXxaM6hHHYNfcWxxD77lxkCac+Ls291dKksrXI=

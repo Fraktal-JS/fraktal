@@ -15,7 +15,7 @@
     },
     "author": {
         "name": "SirPacker",
-        "email": "<EMAIL>"
+        "email": "packer@typicalbot.com"
     },
     "license": "Apache-2.0",
     "bugs": {
@@ -30,13 +30,13 @@
             "package.json"
         ],
         "mac": {
-            "category": "<MAC_CATEGORY_TYPE>",
+            "category": "public.app-category.music",
             "target": [
                 "dmg"
             ]
         },
         "linux": {
-            "category": "<LINUX_CATEGORY_NAME>",
+            "category": "Utility",
             "target": [
                 "AppImage",
                 "deb"
