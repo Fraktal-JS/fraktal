@@ -13,7 +13,12 @@
     <link rel="stylesheet" type="text/css" media="screen" href="css/index.css" />
 
     <script src="https://code.jquery.com/jquery-3.3.1.js" onload="window.$ = window.jQuery = module.exports;"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://use.fontawesome.com/releases/v5.0.9/js/all.js"></script>
+    <script>
+        const { BrowserWindow } = require('electron').remote;
+        const bWindow = BrowserWindow.getFocusedWindow();
+    </script>
 </head>
 
 <body>
@@ -23,9 +28,23 @@
         <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
             <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Fraktal</a>
             <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
-            <ul class="navbar-nav px-3">
+            <ul class="navbar-nav px-2">
                 <li class="nav-item text-nowrap">
-                    <a class="close" onclick="window.close();">
+                    <a class="minmaxclose" onclick="bWindow.minimize();">
+                        <i class="fas fa-minus"></i>
+                    </a>
+                </li>
+            </ul>
+            <ul class="navbar-nav px-2">
+                <li class="nav-item text-nowrap">
+                    <a class="minmaxclose" onclick="bWindow.isMaximized() ? bWindow.unmaximize() : bWindow.maximize();">
+                        <i class="far fa-square"></i>
+                    </a>
+                </li>
+            </ul>
+            <ul class="navbar-nav px-2">
+                <li class="nav-item text-nowrap">
+                    <a class="minmaxclose" onclick="bWindow.close();">
                         <i class="fas fa-times"></i>
                     </a>
                 </li>
@@ -46,30 +65,32 @@
 
                         <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
                             <span>Podcasts</span>
-                            <a class="d-flex align-items-center text-muted" href="#">
+                            <a class="d-flex align-items-center text-muted" data-toggle="collapse" href="#podcasts">
                                 <i class="fas fa-plus-circle"></i>
                             </a>
                         </h6>
-                        <ul class="nav flex-column mb-2">
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">
-                                    <span data-feather="file-text"></span>
-                                    Blah
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">
-                                    <span data-feather="file-text"></span>
-                                    Blah blah
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">
-                                    <span data-feather="file-text"></span>
-                                    Blah blah blah
-                                </a>
-                            </li>
-                        </ul>
+                        <div id="podcasts" class="collapse in" aria-expanded=true>
+                            <ul class="nav flex-column mb-2">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">
+                                        <span data-feather="file-text"></span>
+                                        Blah
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">
+                                        <span data-feather="file-text"></span>
+                                        Blah blah
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">
+                                        <span data-feather="file-text"></span>
+                                        Blah blah blah
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </nav>
             </div>
@@ -81,5 +102,5 @@
 </html>
 
 <script>
-    setTimeout(() => $(".cover").fadeOut(2000), 2000);
+    setTimeout(() => $(".cover").fadeOut(2000), 500);
 </script>

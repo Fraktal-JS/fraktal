@@ -12,9 +12,15 @@ body {
     -webkit-app-region: no-drag;
 }
 
-.navbar .close {
+.navbar .minmaxclose {
+    font-size: 14px;
     -webkit-app-region: no-drag;
     color: white !important;
+    cursor: pointer;
+}
+
+.collapse[aria-expanded=true] {
+    display: block;
 }
 
 .cover {
