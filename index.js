@@ -19,7 +19,7 @@ function create() {
     }));
 
     window.setMenu(null);
-    window.webContents.openDevTools();
+    //window.webContents.openDevTools();
 
     window.on('closed', () => { window = null; });
 }
