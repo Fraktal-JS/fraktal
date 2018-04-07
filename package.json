@@ -21,7 +21,9 @@
         "electron": "^1.8.4"
     },
     "build": {
-        "appId": "de.hendrikwallbaum.blankUpElectron",
-        "app-category-type": "public.app-category.productivity"
+        "appId": "com.cheezewerks.fraktal"
+    },
+    "devDependencies": {
+        "electron-builder": "^20.8.1"
     }
 }
