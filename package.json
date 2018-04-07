@@ -6,17 +6,17 @@
     "scripts": {
         "start": "electron app",
         "postinstall": "electron-builder install-app-deps",
-        "pack": "electron-builder --dir",
-        "release": "build -p onTag"
+        "pack": "build --dir",
+        "build": "build"
     },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/SirPacker/fraktal.git"
     },
     "author": {
-        "name" : "SirPacker",
-        "email" : "<EMAIL>"
-     },
+        "name": "SirPacker",
+        "email": "<EMAIL>"
+    },
     "license": "Apache-2.0",
     "bugs": {
         "url": "https://github.com/SirPacker/fraktal/issues"
