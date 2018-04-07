@@ -17,13 +17,11 @@
         "url": "https://github.com/SirPacker/fraktal/issues"
     },
     "homepage": "https://github.com/SirPacker/fraktal#readme",
-    "dependencies": {
-        "electron": "^1.8.4"
-    },
     "build": {
         "appId": "com.cheezewerks.fraktal"
     },
     "devDependencies": {
+        "electron": "^1.8.4",
         "electron-builder": "^20.8.1"
     }
 }
