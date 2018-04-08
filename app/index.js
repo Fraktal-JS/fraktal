@@ -55,8 +55,8 @@ ipcMain.on("podcast-search", (event, arg) => {
 ipcMain.on("podcast-add", (event, arg) => {
     if (!storage.podcasts) storage.podcasts = [];
 
-    console.log("Podcast add:", arg);
-    storage.podcasts.push(arg);
+    const podcasts = storage.podcasts;
+    podcasts.push(arg);
 
-    console.log(storage.podcasts);
+    storage.podcasts = podcasts;
 });
