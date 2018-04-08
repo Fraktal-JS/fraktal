@@ -178,12 +178,21 @@
 
     const podcasts = ipcRenderer.sendSync("fetch-podcasts");
 
-    podcasts.forEach(p => $('#podcast-list ul').append(
-        `<li class="nav-item">
-            <a class="nav-link" href="#">
-                <span data-feather="file-text"></span>
-                ${p}
-            </a>
-        </li>`
-    ));
+    podcasts.length ? 
+        podcasts.forEach(p => $('#podcast-list ul').append(
+            `<li class="nav-item">
+                <a class="nav-link" href="#">
+                    <span data-feather="file-text"></span>
+                    ${p}
+                </a>
+            </li>`
+        )) :
+        $('#podcast-list ul').append(
+            `<li class="nav-item">
+                <a class="nav-link" href="#">
+                    <span data-feather="file-text"></span>
+                    None to Display
+                </a>
+            </li>`
+        ));
 </script>
