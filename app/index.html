@@ -179,6 +179,8 @@
 
     const podcasts = storage.podcasts;
 
+    if (!podcasts) storage.podcasts = [];
+
     podcasts.length ? 
         podcasts.forEach(p => $('#podcast-list ul').append(
             `<li class="nav-item">
