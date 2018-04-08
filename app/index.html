@@ -20,6 +20,14 @@
         const { BrowserWindow } = require('electron').remote;
         const bWindow = BrowserWindow.getFocusedWindow();
         setTimeout(() => $(".cover").fadeOut(2000), 500);
+
+        document.addEventListener("keydown", function (e) {
+            if (e.which === 123) {
+                bWindow.toggleDevTools();
+            } else if (e.which === 116) {
+                location.reload();
+            }
+        }); 
     </script>
 </head>
 
