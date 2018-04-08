@@ -18,6 +18,7 @@
 
     <script>
         const { remote: { BrowserWindow }, ipcRenderer } = require("electron");
+        const storage = require("fraktal-storage");
 
         const bWindow = BrowserWindow.getFocusedWindow();
         setTimeout(() => $(".cover").fadeOut(2000), 500);
@@ -176,7 +177,7 @@
         $('#podcast-add').modal("toggle");
     }
 
-    const podcasts = ipcRenderer.sendSync("fetch-podcasts", "");
+    const podcasts = storage.podcasts;
 
     podcasts.length ? 
         podcasts.forEach(p => $('#podcast-list ul').append(
