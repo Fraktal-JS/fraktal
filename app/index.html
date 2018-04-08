@@ -25,7 +25,7 @@
         document.addEventListener("keydown", function (e) {
             if (e.which === 123) {
                 bWindow.webContents.toggleDevTools();
-            } else if (e.which === 116) {
+            } else if (e.which === 116 || (e.keyCode == 82 && e.ctrlKey)) {
                 location.reload();
             }
         }); 
@@ -81,9 +81,9 @@
                             <i class="fas fa-plus-circle"></i>
                         </h6>
                     </a>
-                    <div id="podcasts" class="collapse show">
+                    <div id="podcast-list" class="collapse show">
                         <ul class="nav flex-column mb-2">
-                            <li class="nav-item">
+                            <!--<li class="nav-item">
                                 <a class="nav-link" href="#">
                                     <span data-feather="file-text"></span>
                                     Blah
@@ -100,7 +100,7 @@
                                     <span data-feather="file-text"></span>
                                     Blah blah blah
                                 </a>
-                            </li>
+                            </li>-->
                         </ul>
                     </div>
                 </div>
@@ -175,4 +175,15 @@
 
         $('#podcast-add').modal("toggle");
     }
+
+    const podcasts = ipcRenderer.sendSync("fetch-podcasts");
+
+    podcasts.forEach(p => $('#podcast-list ul').append(
+        `<li class="nav-item">
+            <a class="nav-link" href="#">
+                <span data-feather="file-text"></span>
+                ${p}
+            </a>
+        </li>`
+    ));
 </script>

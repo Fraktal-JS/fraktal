@@ -60,3 +60,7 @@ ipcMain.on("podcast-add", (event, arg) => {
 
     storage.podcasts = podcasts;
 });
+
+ipcMain.on("fetch-podcasts", (event, arg) => {
+    event.returnValue = storage.podcasts;
+});
