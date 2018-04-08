@@ -177,12 +177,10 @@
         $('#podcast-add').modal("toggle");
     }
 
-    const podcasts = storage.podcasts;
+    if (!storage.podcasts) storage.podcasts = [];
 
-    if (!podcasts) storage.podcasts = [];
-
-    podcasts.length ? 
-        podcasts.forEach(p => $('#podcast-list ul').append(
+    storage.podcasts.length ? 
+        storage.podcasts.forEach(p => $('#podcast-list ul').append(
             `<li class="nav-item">
                 <a class="nav-link" href="#${p}">
                     <span data-feather="file-text"></span>
