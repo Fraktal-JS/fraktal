@@ -66,5 +66,7 @@
         "electron": "^1.8.4",
         "electron-builder": "^20.8.1"
     },
-    "dependencies": {}
+    "dependencies": {
+        "fraktal-storage": "github:fraktal-js/fraktal-storage"
+    }
 }

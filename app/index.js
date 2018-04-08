@@ -1,5 +1,5 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
-const storage = require("./utility/storage.js");
+const storage = require("fraktal-storage");
 const path = require("path");
 const url = require("url");
 
