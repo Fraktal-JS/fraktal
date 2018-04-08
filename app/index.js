@@ -1,6 +1,6 @@
-const { app, BrowserWindow } = require('electron');
-const path = require('path');
-const url = require('url');
+const { app, BrowserWindow } = require("electron");
+const path = require("path");
+const url = require("url");
 
 const isDev = "ELECTRON_IS_DEV" in process.env ? parseInt(process.env.ELECTRON_IS_DEV, 10) === 1 : (process.defaultApp || /node_modules[\\/]electron[\\/]/.test(process.execPath));
 let window;
@@ -9,13 +9,14 @@ function create() {
     window = new BrowserWindow({
         titleBarStyle: "customButtonsOnHover",
         frame: false,
+        show: false
     });
 
     window.maximize();
 
     window.loadURL(url.format({
-        pathname: path.join(__dirname, 'index.html'),
-        protocol: 'file:',
+        pathname: path.join(__dirname, "index.html"),
+        protocol: "file:",
         slashes: true
     }));
 
@@ -26,17 +27,19 @@ function create() {
         window.webContents.openDevTools();
     }
 
-    window.on('closed', () => { window = null; });
+    window.on("closed", () => { window = null; });
+
+    window.once("ready-to-show", () => window.show());
 }
 
-app.on('ready', () => {
+app.on("ready", () => {
     create();
 });
 
-app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') app.quit();
+app.on("window-all-closed", () => {
+    if (process.platform !== "darwin") app.quit();
 });
 
-app.on('activate', () => {
+app.on("activate", () => {
     if (!window) create();
 });
