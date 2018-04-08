@@ -37,7 +37,8 @@
 
     <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
         <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Fraktal</a>
-        <input class="form-control form-control-dark w-100" id="podcast-search" type="search" onsearch="search(this)" placeholder="Search for new podcast" aria-label="Search">
+        <input class="form-control form-control-dark w-100" id="podcast-search" type="search" onsearch="search(this)" placeholder="Search for new podcast"
+            aria-label="Search">
         <ul class="navbar-nav px-2">
             <li class="nav-item text-nowrap">
                 <a class="minmaxclose" onclick="bWindow.minimize();">
@@ -126,13 +127,14 @@
                     <form>
                         <div class="form-group">
                             <label for="podcast-url" class="col-form-label">Podcast URL</label>
-                            <input type="text" class="form-control" id="podcast-url">
+                            <input type="text" class="form-control" id="podcast-add-text">
+                            <p id="podcast-add-err" style="font-style: italic; color: red;"></p>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary">Add Podcast</button>
+                    <button type="button" class="btn btn-primary" id="podcast-add-btn" onclick="podcastAdd()">Add Podcast</button>
                 </div>
             </div>
         </div>
@@ -143,14 +145,34 @@
 </html>
 
 <script>
-    function search(thing) {
+    function search() {
         const searchBar = $("#podcast-search");
-        
         if (!searchBar.val()) return;
-        
+
         ipcRenderer.send("podcast-search", searchBar.val());
 
         searchBar.val(null);
         searchBar.blur();
+    }
+
+    $('#podcast-add-text').keyup(function (e) {
+        if (!e.target.value) return $("#podcast-add-err").html(null);
+        if (!/https?:\/\/\w+\.\w+(?:[\\\/\-_\w#?=]+)?/.test(e.target.value)) return $("#podcast-add-err").html("* Please provide a valid URL.");
+        $("#podcast-add-err").html(null);
+        $('#podcast-add-text').attr("podcast-can-add", true);
+    });
+
+    function podcastAdd() {
+        if (!$('#podcast-add-text').attr("podcast-can-add")) return $('#podcast-add-err').html("* URL is not valid.");;
+
+        const searchBar = $("#podcast-add-text");
+        if (!searchBar.val()) return;
+
+        ipcRenderer.send("podcast-add", searchBar.val());
+
+        searchBar.val(null);
+        searchBar.blur();
+
+        $('#podcast-add').modal("toggle");
     }
 </script>

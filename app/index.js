@@ -1,4 +1,5 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
+const storage = require("./utility/storage.js");
 const path = require("path");
 const url = require("url");
 
@@ -49,4 +50,13 @@ app.on("activate", () => {
 
 ipcMain.on("podcast-search", (event, arg) => {
     console.log("A search was started:", arg);
+});
+
+ipcMain.on("podcast-add", (event, arg) => {
+    if (!storage.podcasts) storage.podcasts = [];
+
+    console.log("Podcast add:", arg);
+    storage.podcasts.push(arg);
+
+    console.log(storage.podcasts);
 });
