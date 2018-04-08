@@ -2,14 +2,13 @@ const { app, BrowserWindow } = require("electron");
 const path = require("path");
 const url = require("url");
 
+const isDev = "ELECTRON_IS_DEV" in process.env ? parseInt(process.env.ELECTRON_IS_DEV, 10) === 1 : (process.defaultApp || /node_modules[\\/]electron[\\/]/.test(process.execPath));
 let window;
 
 function create() {
     window = new BrowserWindow({
         titleBarStyle: "customButtonsOnHover",
         frame: false,
-        width: 954,
-        height: 516,
         show: false
     });
 
@@ -22,7 +21,11 @@ function create() {
     }));
 
     window.setMenu(null);
-    //window.webContents.openDevTools();
+
+    if (isDev) {
+        require("devtron").install()
+        window.webContents.openDevTools();
+    }
 
     window.on("closed", () => { window = null; });
 
