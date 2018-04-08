@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 const url = require("url");
 
@@ -45,4 +45,8 @@ app.on("window-all-closed", () => {
 
 app.on("activate", () => {
     if (!window) create();
+});
+
+ipcMain.on("podcast-search", (event, arg) => {
+    console.log("A search was started:", arg);
 });

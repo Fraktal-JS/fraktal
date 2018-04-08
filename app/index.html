@@ -17,13 +17,14 @@
     <script src="https://use.fontawesome.com/releases/v5.0.9/js/all.js"></script>
 
     <script>
-        const { BrowserWindow } = require('electron').remote;
+        const { remote: { BrowserWindow }, ipcRenderer } = require("electron");
+
         const bWindow = BrowserWindow.getFocusedWindow();
         setTimeout(() => $(".cover").fadeOut(2000), 500);
 
         document.addEventListener("keydown", function (e) {
             if (e.which === 123) {
-                bWindow.toggleDevTools();
+                bWindow.webContents.toggleDevTools();
             } else if (e.which === 116) {
                 location.reload();
             }
@@ -36,7 +37,7 @@
 
     <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
         <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Fraktal</a>
-        <input class="form-control form-control-dark w-100" type="text" placeholder="Search for new podcast" aria-label="Search">
+        <input class="form-control form-control-dark w-100" id="podcast-search" type="search" onsearch="search(this)" placeholder="Search for new podcast" aria-label="Search">
         <ul class="navbar-nav px-2">
             <li class="nav-item text-nowrap">
                 <a class="minmaxclose" onclick="bWindow.minimize();">
@@ -140,3 +141,16 @@
 </body>
 
 </html>
+
+<script>
+    function search(thing) {
+        const searchBar = $("#podcast-search");
+        
+        if (!searchBar.val()) return;
+        
+        ipcRenderer.send("podcast-search", searchBar.val());
+
+        searchBar.val(null);
+        searchBar.blur();
+    }
+</script>
