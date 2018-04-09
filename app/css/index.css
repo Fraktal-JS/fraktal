@@ -28,15 +28,21 @@ body {
 
 .scroll {
     overflow-y: scroll;
-    height: calc(100vh - 48px);
+    position: fixed;
+    top: 48px;
+    bottom: 0;
+    right: 0;
 }
 
-.scroll::-webkit-scrollbar {
+.scroll::-webkit-scrollbar,
+.sidebar-sticky::-webkit-scrollbar {
     width: 10px;
 }
 
 .scroll::-webkit-scrollbar-thumb:window-inactive,
-.scroll::-webkit-scrollbar-thumb {
+.scroll::-webkit-scrollbar-thumb,
+.sidebar-sticky::-webkit-scrollbar-thumb:window-inactive,
+.sidebar-sticky::-webkit-scrollbar-thumb {
     background: #343a40;
 }
 
