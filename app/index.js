@@ -65,13 +65,12 @@ ipcMain.on("podcast-add", (event, arg) => {
 });
 
 ipcMain.on("podcast-load", (event, url) => {
-    //console.log(url);
     request.get(url).then(r => {
-        parsePodcast(r.body, (err, { title, description, episodes }) => {
-            if (err) throw err;
+        parsePodcast(r.text, (err, data) => {
+            if (err) throw err.stack;
 
-            window.send("podcast-open", { title, description, episodes });
+            window.send("podcast-open", data);
         });
 
-    }).catch(err => window.send("invalid-url", err));
+    }).catch(err => { throw err.stack; });
 });

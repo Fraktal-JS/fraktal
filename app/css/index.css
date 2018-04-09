@@ -2,6 +2,7 @@ body {
     margin: 0;
     background-color: #f0f0f0;
     font-size: .875rem;
+    overflow: hidden;
 }
 
 .navbar {
@@ -24,6 +25,27 @@ body {
     z-index: 9999;
     height: 100%;
     width: 100%;
+}
+
+.scroll ul {
+	overflow-y: scroll;
+}
+
+.scroll ul::-webkit-scrollbar {
+    background-color: #fff;
+    width: .8em;
+    height: 100%;
+}
+
+.scroll ul::-webkit-scrollbar-track-piece {
+    background-clip: padding-box;
+    background-color: #7289da;
+    border: 3px solid #fff;
+    border-radius: 7px;
+}
+.scroll ul::-webkit-scrollbar-thumb:window-inactive,
+.scroll ul::-webkit-scrollbar-thumb {
+    background:  black;
 }
 
 .feather {

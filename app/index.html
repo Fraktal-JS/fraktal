@@ -23,7 +23,7 @@
         const bWindow = BrowserWindow.getFocusedWindow();
         setTimeout(() => $(".cover").fadeOut(2000), 500);
 
-        document.addEventListener("keydown", function (e) {
+        document.addEventListener("keydown", function(e) {
             if (e.which === 123) {
                 bWindow.webContents.toggleDevTools();
             } else if (e.which === 116 || (e.keyCode == 82 && e.ctrlKey)) {
@@ -76,7 +76,7 @@
                         </li>
                     </ul>
 
-                    <a style="text-decoration: none;" data-toggle="collapse" href="#podcasts">
+                    <a style="text-decoration: none;" data-toggle="collapse" href="#podcast-list">
                         <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
                             <span>Podcasts</span>
                             <i class="fas fa-plus-circle"></i>
@@ -113,8 +113,12 @@
                         track of and download your favorite podcasts.
                         <p>
                 </div>
-                <div id="podcast-data" style="display: none;">
-                    Placeholder
+                <div class="scroll" id="podcast-data" style="display: none;">
+                    <h2>Title</h2>
+                    <h4>Description</h4>
+                    <ul id="podcast-episode-list">
+
+                    </ul>
                 </div>
             </main>
         </div>
@@ -180,7 +184,7 @@
         ipcRenderer.send("podcast-load", url);
     }
 
-    $('#podcast-add-text').keyup(function (e) {
+    $('#podcast-add-text').keyup(function(e) {
         if (!e.target.value) return $("#podcast-add-err").html(null);
         if (!/https?:\/\/\w+\.\w+(?:[\\\/\-_\w#?=]+)?/.test(e.target.value)) return $("#podcast-add-err").html("* Please provide a valid URL.");
         $("#podcast-add-err").html(null);
@@ -189,11 +193,10 @@
 
     if (!storage.podcasts) storage.podcasts = [];
 
-    console.log(storage.podcasts)
     storage.podcasts.length ?
         storage.podcasts.forEach(p => $('#podcast-list ul').append(
             `<li class="nav-item">
-                <a class="nav-link" onclick="loadPodcast(\"${p}\")">
+                <a class="nav-link" href="#" onclick="loadPodcast('${p}')">
                     ${p}
                 </a>
             </li>`
@@ -209,16 +212,30 @@
 
     ipcRenderer.on("podcast-open", (event, data) => {
         $("#main").css("display", "none");
-        console.log(data);
-        data.episodes.forEach(e => $('#podcast-list ul').append(
-            `<li class="nav-item">
-                <a class="nav-link" onclick="${e.url}">
-                    ${e.title}
-                </a>
-            </li>`
-        ))
+        console.log(data.episodes);
+        for (const e of data.episodes) {
+            if (e.enclosure) {
+                $('#podcast-episode-list').append(
+                    `<li class="nav-item">
+                        <a class="nav-link" onclick="play('${e.url || e.enclosure.url}')">
+                            ${e.title}
+                        </a>
+                    </li>`
+                );
+            }
+        }
         $("#podcast-data").css("display", "block");
-    })
+    });
 
-    //$("#main-1").css("display", "none");
+    let audio;
+
+    function play(url) {
+        if (audio) audio.pause();
+
+        audio = new Audio(url);
+
+        console.log(audio);
+
+        audio.play();
+    }
 </script>
