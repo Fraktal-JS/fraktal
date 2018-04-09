@@ -4,7 +4,7 @@
     "description": "Podcast Manager in Electron",
     "main": "app/index.js",
     "scripts": {
-        "start": "electron app",
+        "start": "electron .",
         "postinstall": "electron-builder install-app-deps",
         "pack": "build --dir",
         "build": "build"
@@ -67,6 +67,8 @@
         "electron-builder": "^20.8.1"
     },
     "dependencies": {
-        "fraktal-storage": "github:fraktal-js/fraktal-storage"
+        "fraktal-storage": "github:fraktal-js/fraktal-storage",
+        "node-podcast-parser": "^2.1.0",
+        "snekfetch": "^3.6.4"
     }
 }

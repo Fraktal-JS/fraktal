@@ -85,7 +85,7 @@
                     <div id="podcast-list" class="collapse show">
                         <ul class="nav flex-column mb-2">
                             <!--<li class="nav-item">
-                                <a class="nav-link" href="#">
+                                <a class="nav-link" id="podcast-url" onclick="podcast("")">
                                     <span data-feather="file-text"></span>
                                     Blah
                                 </a>
@@ -107,10 +107,15 @@
                 </div>
             </nav>
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-                <h3>Hello there!</h3>
-                <p>Welcome to Fraktal, the new and soon-to-be best podcast management application. You can use this to keep
-                    track of and download your favorite podcasts.
-                    <p>
+                <div id="main">
+                    <h3>Hello there!</h3>
+                    <p>Welcome to Fraktal, the new and soon-to-be best podcast management application. You can use this to keep
+                        track of and download your favorite podcasts.
+                        <p>
+                </div>
+                <div id="podcast-data" style="display: none;">
+                    Placeholder
+                </div>
             </main>
         </div>
     </div>
@@ -156,15 +161,8 @@
         searchBar.blur();
     }
 
-    $('#podcast-add-text').keyup(function (e) {
-        if (!e.target.value) return $("#podcast-add-err").html(null);
-        if (!/https?:\/\/\w+\.\w+(?:[\\\/\-_\w#?=]+)?/.test(e.target.value)) return $("#podcast-add-err").html("* Please provide a valid URL.");
-        $("#podcast-add-err").html(null);
-        $('#podcast-add-text').attr("podcast-can-add", true);
-    });
-
     function podcastAdd() {
-        if (!$('#podcast-add-text').attr("podcast-can-add")) return $('#podcast-add-err').html("* URL is not valid.");;
+        if (!$('#podcast-add-text').attr("podcast-can-add")) return $('#podcast-add-err').html("* URL is not valid.");
 
         const searchBar = $("#podcast-add-text");
         if (!searchBar.val()) return;
@@ -177,13 +175,25 @@
         $('#podcast-add').modal("toggle");
     }
 
+    function loadPodcast(url) {
+        console.log(url)
+        ipcRenderer.send("podcast-load", url);
+    }
+
+    $('#podcast-add-text').keyup(function (e) {
+        if (!e.target.value) return $("#podcast-add-err").html(null);
+        if (!/https?:\/\/\w+\.\w+(?:[\\\/\-_\w#?=]+)?/.test(e.target.value)) return $("#podcast-add-err").html("* Please provide a valid URL.");
+        $("#podcast-add-err").html(null);
+        $('#podcast-add-text').attr("podcast-can-add", true);
+    });
+
     if (!storage.podcasts) storage.podcasts = [];
 
-    storage.podcasts.length ? 
+    console.log(storage.podcasts)
+    storage.podcasts.length ?
         storage.podcasts.forEach(p => $('#podcast-list ul').append(
             `<li class="nav-item">
-                <a class="nav-link" href="#${p}">
-                    <span data-feather="file-text"></span>
+                <a class="nav-link" onclick="loadPodcast(\"${p}\")">
                     ${p}
                 </a>
             </li>`
@@ -196,4 +206,19 @@
                 </a>
             </li>`
         );
+
+    ipcRenderer.on("podcast-open", (event, data) => {
+        $("#main").css("display", "none");
+        console.log(data);
+        data.episodes.forEach(e => $('#podcast-list ul').append(
+            `<li class="nav-item">
+                <a class="nav-link" onclick="${e.url}">
+                    ${e.title}
+                </a>
+            </li>`
+        ))
+        $("#podcast-data").css("display", "block");
+    })
+
+    //$("#main-1").css("display", "none");
 </script>

@@ -1,5 +1,8 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
 const storage = require("fraktal-storage");
+const request = require("snekfetch");
+const parsePodcast = require("node-podcast-parser");
+
 const path = require("path");
 const url = require("url");
 
@@ -59,4 +62,16 @@ ipcMain.on("podcast-add", (event, arg) => {
     podcasts.push(arg);
 
     storage.podcasts = podcasts;
+});
+
+ipcMain.on("podcast-load", (event, url) => {
+    //console.log(url);
+    request.get(url).then(r => {
+        parsePodcast(r.body, (err, { title, description, episodes }) => {
+            if (err) throw err;
+
+            window.send("podcast-open", { title, description, episodes });
+        });
+
+    }).catch(err => window.send("invalid-url", err));
 });
