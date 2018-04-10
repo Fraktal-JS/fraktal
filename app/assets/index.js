@@ -99,7 +99,7 @@ function play(element) {
     audio.play();
 
     audio.onended = () => {
-        const newAudio = $(`#podcast-data-episodes[id="${id - 1}"]`);
+        const newAudio = $(`#podcast-data-episodes li a[podcast-id="${id - 1}"]`);
         play(newAudio);
     };
 }
