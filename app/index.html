@@ -87,18 +87,21 @@
                     </div>
                 </div>
             </nav>
-            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4 scroll">
-                <div id="main">
-                    <h3>Hello there!</h3>
-                    <p>Welcome to Fraktal, the new and soon-to-be best podcast management application. You can use this to keep
-                        track of and download your favorite podcasts.
-                        <p>
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4 scroll main-nopadding">
+                <div class="main-padding">
+                    <div id="main">
+                        <h3>Hello there!</h3>
+                        <p>Welcome to Fraktal, the new and soon-to-be best podcast management application. You can use this
+                            to keep track of and download your favorite podcasts.
+                            <p>
+                    </div>
+                    <div id="podcast-data" style="display: none;">
+                        <h2 id="podcast-data-title"></h2>
+                        <h5 id="podcast-data-description"></h5>
+                        <ul id="podcast-data-episodes"></ul>
+                    </div>
                 </div>
-                <div id="podcast-data" style="display: none;">
-                    <h2 id="podcast-data-title"></h2>
-                    <h5 id="podcast-data-description"></h5>
-                    <ul id="podcast-data-episodes"></ul>
-                </div>
+                <div id="audio-box"></div>
             </main>
         </div>
     </div>
@@ -221,7 +224,7 @@
             if (e.enclosure) {
                 $('#podcast-data-episodes').append(
                     `<li class="nav-item">
-                        <a class="nav-link" onclick="play('${e.url || e.enclosure.url}')">
+                        <a class="nav-link" onclick="play(\`${e.title}\`, '${e.enclosure.url}')">
                             ${e.title}
                         </a>
                     </li>`
@@ -234,10 +237,17 @@
 
     let audio;
 
-    function play(url) {
-        if (audio) audio.pause();
+    function play(title, url) {
+        $("#audio-box").empty();
 
-        audio = new Audio(url);
+        $("#audio-box").append(`
+            <p><b>Now Playing:</b> ${title}</p>
+            <audio controls id="audio-play">
+                <source src="${url}" type="audio/mpeg">
+            </audio>
+        `)
+
+        audio = $("#audio-box audio")[0];
 
         audio.play();
     }

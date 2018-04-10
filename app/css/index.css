@@ -46,6 +46,32 @@ body {
     background: #343a40;
 }
 
+.main-nopadding {
+    padding: 0 !important;
+}
+
+.main-padding {
+    padding: 24px;
+}
+
+#audio-box {
+    position: sticky;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+}
+#audio-box p {
+    margin: 0;
+    width: 100%;
+    background-color: #fafafa;
+    text-align: center;
+}
+#audio-box audio {
+    width: 100%;
+    margin-bottom: -5px;
+}
+
 .feather {
     width: 16px;
     height: 16px;
