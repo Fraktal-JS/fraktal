@@ -74,12 +74,18 @@ function podcastList(podcasts) {
         );
 }
 
-function play(title, url) {
+function play(element) {
+    const elem = $(element);
+
+    const id = elem.attr("podcast-id");
+    const title = elem.attr("podcast-title");
+    const url = elem.attr("podcast-url");
+
     $("#audio-box").empty();
 
     $("#audio-box").append(`
         <p><b>Now Playing:</b> ${title}</p>
-        <audio controls id="audio-play" onloadstart="this.volume=storage.settings.volume">
+        <audio controls id="audio-play" podcast-id="${id}" onloadstart="this.volume=storage.settings.volume">
             <source src="${url}" type="audio/mpeg">
         </audio>
     `);
@@ -91,6 +97,11 @@ function play(title, url) {
     };
 
     audio.play();
+
+    audio.onended = () => {
+        const newAudio = $(`#podcast-data-episodes[id="${id - 1}"]`);
+        play(newAudio);
+    };
 }
 
 $(document).ready(function() {
@@ -124,15 +135,18 @@ $(document).ready(function() {
         $('#podcast-data-title').html(data.title);
         $('#podcast-data-description').html(data.description.long);
 
+        let num = 0;
+
         for (const e of data.episodes) {
             if (e.enclosure) {
                 $('#podcast-data-episodes').append(
                     `<li class="nav-item podcast-data-episode-link">
-                <a class="nav-link" onclick="play(\`${e.title}\`, '${e.enclosure.url}')">
+                <a class="nav-link" podcast-id="${num}" podcast-title="${e.title}" podcast-url="${e.enclosure.url}" onclick="play(this)">
                     ${e.title}
                 </a>
             </li>`
                 );
+                num++;
             }
         }
 
