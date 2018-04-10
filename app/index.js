@@ -16,7 +16,9 @@ function create() {
     window = new BrowserWindow({
         titleBarStyle: "customButtonsOnHover",
         frame: false,
-        show: false
+        show: false,
+        height: 575,
+        width: 1000
     });
 
     window.storage = storage;

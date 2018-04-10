@@ -122,7 +122,7 @@ $(document).ready(function() {
         for (const e of data.episodes) {
             if (e.enclosure) {
                 $('#podcast-data-episodes').append(
-                    `<li class="nav-item">
+                    `<li class="nav-item podcast-data-episode-link">
                 <a class="nav-link" onclick="play(\`${e.title}\`, '${e.enclosure.url}')">
                     ${e.title}
                 </a>

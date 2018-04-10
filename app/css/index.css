@@ -40,6 +40,10 @@ body {
     cursor: pointer;
 }
 
+.podcast-data-episode-link:hover {
+    cursor: pointer;
+}
+
 .scroll {
     overflow-y: scroll;
     position: fixed;
