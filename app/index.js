@@ -44,6 +44,7 @@ function create() {
 }
 
 app.on("ready", () => {
+    if (!storage.settings) storage.settings = { volume: 0.25 };
     create();
 });
 

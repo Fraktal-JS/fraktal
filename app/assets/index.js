@@ -79,12 +79,16 @@ function play(title, url) {
 
     $("#audio-box").append(`
         <p><b>Now Playing:</b> ${title}</p>
-        <audio controls id="audio-play">
+        <audio controls id="audio-play" onloadstart="this.volume=storage.settings.volume">
             <source src="${url}" type="audio/mpeg">
         </audio>
     `);
 
     audio = $("#audio-box audio")[0];
+
+    audio.onvolumechange = function() {
+        storage.settings.volume = audio.volume;
+    };
 
     audio.play();
 }
