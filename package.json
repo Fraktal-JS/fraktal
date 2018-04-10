@@ -1,6 +1,6 @@
 {
     "name": "fraktal",
-    "version": "0.0.2-dev",
+    "version": "1.0.0",
     "description": "Podcast Manager in Electron",
     "main": "app/index.js",
     "scripts": {
