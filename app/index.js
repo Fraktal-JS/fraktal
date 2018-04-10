@@ -60,7 +60,7 @@ ipcMain.on("podcast-search", (event, arg) => {
 ipcMain.on("podcast-add", (event, url) => {
     request.get(url).then(r => {
         parsePodcast(r.text, (err, data) => {
-            if (err) throw err.stack;
+            if (err) return window.send("err-reset", err);
 
             if (!storage.podcasts) storage.podcasts = [];
 
@@ -72,16 +72,26 @@ ipcMain.on("podcast-add", (event, url) => {
             window.send("podcast-list", storage.podcasts);
         });
 
-    }).catch(err => { throw err.stack; });
+    }).catch(err => window.send("err-reset", err));
+});
+
+ipcMain.on("podcast-remove", (event, url) => {
+    const list = storage.podcasts;
+
+    const newList = list.filter(p => p.url !== url);
+
+    storage.podcasts = newList;
+
+    window.send("podcast-list", storage.podcasts);
 });
 
 ipcMain.on("podcast-load", (event, url) => {
     request.get(url).then(r => {
         parsePodcast(r.text, (err, data) => {
-            if (err) throw err.stack;
+            if (err) return window.send("err-reset", err);
 
             window.send("podcast-open", data);
         });
 
-    }).catch(err => { throw err.stack; });
+    }).catch(err => window.send("err-reset", err));
 });

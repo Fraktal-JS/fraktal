@@ -15,22 +15,7 @@
     <script src="https://code.jquery.com/jquery-3.3.1.js" onload="window.$ = window.jQuery = module.exports;"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="https://use.fontawesome.com/releases/v5.0.9/js/all.js"></script>
-
-    <script>
-        const { remote: { BrowserWindow }, ipcRenderer } = require("electron");
-        const storage = require("fraktal-storage");
-
-        const bWindow = BrowserWindow.getFocusedWindow();
-        setTimeout(() => $(".cover").fadeOut(2000), 500);
-
-        document.addEventListener("keydown", function(e) {
-            if (e.which === 123) {
-                bWindow.webContents.toggleDevTools();
-            } else if (e.which === 116 || (e.keyCode == 82 && e.ctrlKey)) {
-                location.reload();
-            }
-        }); 
-    </script>
+    <script src="assets/index.js"></script>
 </head>
 
 <body>
@@ -116,7 +101,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form id="podcast-add-form">
                         <div class="form-group">
                             <label for="podcast-url" class="col-form-label">Podcast URL</label>
                             <input type="text" class="form-control" id="podcast-add-text">
@@ -135,120 +120,3 @@
 </body>
 
 </html>
-
-<script>
-    function search() {
-        const searchBar = $("#podcast-search");
-        if (!searchBar.val()) return;
-
-        ipcRenderer.send("podcast-search", searchBar.val());
-
-        searchBar.val(null);
-        searchBar.blur();
-    }
-
-    function podcastAdd() {
-        if (!$('#podcast-add-text').attr("podcast-can-add")) return $('#podcast-add-err').html("* URL is not valid.");
-
-        const searchBar = $("#podcast-add-text");
-        if (!searchBar.val()) return;
-
-        ipcRenderer.send("podcast-add", searchBar.val());
-
-        searchBar.val(null);
-        searchBar.blur();
-
-        $('#podcast-add').modal("toggle");
-    }
-
-    function loadPodcast(url) {
-        console.log(url)
-        ipcRenderer.send("podcast-load", url);
-    }
-
-    $('#podcast-add-text').keyup(function(e) {
-        if (!e.target.value) return $("#podcast-add-err").html(null);
-        if (!/https?:\/\/\w+\.\w+(?:[\\\/\-_\w#?=]+)?/.test(e.target.value)) return $("#podcast-add-err").html("* Please provide a valid URL.");
-        $("#podcast-add-err").html(null);
-        $('#podcast-add-text').attr("podcast-can-add", true);
-    });
-
-    if (!storage.podcasts) storage.podcasts = [];
-
-    storage.podcasts.length ?
-        storage.podcasts.forEach(p => $('#podcast-list ul').append(
-            `<li class="nav-item">
-                <a class="nav-link" href="#" onclick="loadPodcast('${p.url}')">
-                    ${p.title}
-                </a>
-            </li>`
-        )) :
-        $('#podcast-list ul').append(
-            `<li class="nav-item">
-                <a class="nav-link">
-                    <span data-feather="file-text"></span>
-                    None to Display
-                </a>
-            </li>`
-        );
-
-    ipcRenderer.on("podcast-list", (event, podcasts) => {
-        $('#podcast-list ul').empty();
-
-        podcasts.length ?
-            podcasts.forEach(p => $('#podcast-list ul').append(
-                `<li class="nav-item">
-                    <a class="nav-link" href="#" onclick="loadPodcast('${p.url}')">
-                        ${p.title}
-                    </a>
-                </li>`
-            )) :
-            $('#podcast-list ul').append(
-                `<li class="nav-item">
-                    <a class="nav-link">
-                        <span data-feather="file-text"></span>
-                        None to Display
-                    </a>
-                </li>`
-            );
-    });
-
-    ipcRenderer.on("podcast-open", (event, data) => {
-        $("#main").css("display", "none");
-
-        $('#podcast-data-episodes').empty();
-        $('#podcast-data-title').html(data.title);
-        $('#podcast-data-description').html(data.description.long);
-
-        for (const e of data.episodes) {
-            if (e.enclosure) {
-                $('#podcast-data-episodes').append(
-                    `<li class="nav-item">
-                        <a class="nav-link" onclick="play(\`${e.title}\`, '${e.enclosure.url}')">
-                            ${e.title}
-                        </a>
-                    </li>`
-                );
-            }
-        }
-
-        $("#podcast-data").css("display", "block");
-    });
-
-    let audio;
-
-    function play(title, url) {
-        $("#audio-box").empty();
-
-        $("#audio-box").append(`
-            <p><b>Now Playing:</b> ${title}</p>
-            <audio controls id="audio-play">
-                <source src="${url}" type="audio/mpeg">
-            </audio>
-        `)
-
-        audio = $("#audio-box audio")[0];
-
-        audio.play();
-    }
-</script>

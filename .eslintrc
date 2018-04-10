@@ -24,6 +24,12 @@
             "error",
             "always"
         ],
-        "prefer-const": "error"
+        "prefer-const": "error",
+        "no-useless-escape": 0
+    },
+    "globals": {
+        "$": true,
+        "document": true,
+        "location": true
     }
 }
