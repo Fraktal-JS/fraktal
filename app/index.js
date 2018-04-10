@@ -19,6 +19,8 @@ function create() {
         show: false
     });
 
+    window.storage = storage;
+
     window.maximize();
 
     window.loadURL(url.format({
@@ -55,13 +57,22 @@ ipcMain.on("podcast-search", (event, arg) => {
     console.log("A search was started:", arg);
 });
 
-ipcMain.on("podcast-add", (event, arg) => {
-    if (!storage.podcasts) storage.podcasts = [];
+ipcMain.on("podcast-add", (event, url) => {
+    request.get(url).then(r => {
+        parsePodcast(r.text, (err, data) => {
+            if (err) throw err.stack;
 
-    const podcasts = storage.podcasts;
-    podcasts.push(arg);
+            if (!storage.podcasts) storage.podcasts = [];
 
-    storage.podcasts = podcasts;
+            const podcasts = storage.podcasts;
+            podcasts.push({ title: data.title, url });
+
+            storage.podcasts = podcasts;
+
+            window.send("podcast-list", storage.podcasts);
+        });
+
+    }).catch(err => { throw err.stack; });
 });
 
 ipcMain.on("podcast-load", (event, url) => {

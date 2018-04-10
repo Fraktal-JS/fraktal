@@ -83,26 +83,7 @@
                         </h6>
                     </a>
                     <div id="podcast-list" class="collapse show">
-                        <ul class="nav flex-column mb-2">
-                            <!--<li class="nav-item">
-                                <a class="nav-link" id="podcast-url" onclick="podcast("")">
-                                    <span data-feather="file-text"></span>
-                                    Blah
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">
-                                    <span data-feather="file-text"></span>
-                                    Blah blah
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">
-                                    <span data-feather="file-text"></span>
-                                    Blah blah blah
-                                </a>
-                            </li>-->
-                        </ul>
+                        <ul class="nav flex-column mb-2"></ul>
                     </div>
                 </div>
             </nav>
@@ -114,11 +95,9 @@
                         <p>
                 </div>
                 <div id="podcast-data" style="display: none;">
-                    <h2>Title</h2>
-                    <h4>Description</h4>
-                    <ul id="podcast-episode-list">
-
-                    </ul>
+                    <h2 id="podcast-data-title"></h2>
+                    <h5 id="podcast-data-description"></h5>
+                    <ul id="podcast-data-episodes"></ul>
                 </div>
             </main>
         </div>
@@ -196,8 +175,8 @@
     storage.podcasts.length ?
         storage.podcasts.forEach(p => $('#podcast-list ul').append(
             `<li class="nav-item">
-                <a class="nav-link" href="#" onclick="loadPodcast('${p}')">
-                    ${p}
+                <a class="nav-link" href="#" onclick="loadPodcast('${p.url}')">
+                    ${p.title}
                 </a>
             </li>`
         )) :
@@ -210,12 +189,37 @@
             </li>`
         );
 
+    ipcRenderer.on("podcast-list", (event, podcasts) => {
+        $('#podcast-list ul').empty();
+
+        podcasts.length ?
+            podcasts.forEach(p => $('#podcast-list ul').append(
+                `<li class="nav-item">
+                    <a class="nav-link" href="#" onclick="loadPodcast('${p.url}')">
+                        ${p.title}
+                    </a>
+                </li>`
+            )) :
+            $('#podcast-list ul').append(
+                `<li class="nav-item">
+                    <a class="nav-link">
+                        <span data-feather="file-text"></span>
+                        None to Display
+                    </a>
+                </li>`
+            );
+    });
+
     ipcRenderer.on("podcast-open", (event, data) => {
         $("#main").css("display", "none");
-        console.log(data.episodes);
+
+        $('#podcast-data-episodes').empty();
+        $('#podcast-data-title').html(data.title);
+        $('#podcast-data-description').html(data.description.long);
+
         for (const e of data.episodes) {
             if (e.enclosure) {
-                $('#podcast-episode-list').append(
+                $('#podcast-data-episodes').append(
                     `<li class="nav-item">
                         <a class="nav-link" onclick="play('${e.url || e.enclosure.url}')">
                             ${e.title}
@@ -224,6 +228,7 @@
                 );
             }
         }
+
         $("#podcast-data").css("display", "block");
     });
 
@@ -233,8 +238,6 @@
         if (audio) audio.pause();
 
         audio = new Audio(url);
-
-        console.log(audio);
 
         audio.play();
     }
