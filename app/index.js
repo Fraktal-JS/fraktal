@@ -24,14 +24,14 @@ function create() {
     window.storage = storage;
 
     window.maximize();
+    window.focus();
+    window.setMenu(null);
 
     window.loadURL(url.format({
         pathname: path.join(__dirname, "index.html"),
         protocol: "file:",
         slashes: true
     }));
-
-    window.setMenu(null);
 
     if (developerMode) {
         require("devtron").install();

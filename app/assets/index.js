@@ -25,7 +25,7 @@ function search() {
 }
 
 function podcastAdd() {
-    if (!$('#podcast-add-text').attr("podcast-can-add")) return $('#podcast-add-err').html("* URL is not valid.");
+    if (!/https?:\/\/\w+\.\w+(?:[\\\/\-_\w#?=]+)?/.test($('#podcast-add-text').val())) return $("#podcast-add-err").html("* Please provide a valid URL.");
 
     const searchBar = $("#podcast-add-text");
     if (!searchBar.val()) return;
@@ -103,6 +103,7 @@ $(document).ready(function() {
     });
 
     $('#podcast-add-text').keyup(function(e) {
+        $('#podcast-add-text').attr("podcast-can-add", false);
         if (!e.target.value) return $("#podcast-add-err").html(null);
         if (!/https?:\/\/\w+\.\w+(?:[\\\/\-_\w#?=]+)?/.test(e.target.value)) return $("#podcast-add-err").html("* Please provide a valid URL.");
         $("#podcast-add-err").html(null);
