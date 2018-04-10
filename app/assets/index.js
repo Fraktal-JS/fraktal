@@ -101,8 +101,8 @@ function play(element) {
     audio.onended = () => {
         const newAudio = $(`#podcast-data-episodes li a[podcast-id="${id - 1}"]`);
 
-        if (!newAudio) $("#audio-box").empty();
-        
+        if (!newAudio) return $("#audio-box").empty();
+
         play(newAudio);
     };
 }
