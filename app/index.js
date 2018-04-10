@@ -39,61 +39,56 @@ function create() {
     }
 
     window.on("closed", () => { window = null; });
-
     window.once("ready-to-show", () => window.show());
 }
 
 app.on("ready", () => {
     if (!storage.settings) storage.settings = { volume: 0.25 };
+    if (!storage.podcasts) storage.podcasts = [];
+
     create();
 });
 
-app.on("window-all-closed", () => {
-    if (process.platform !== "darwin") app.quit();
+app.on("window-all-closed", () => { if (process.platform !== "darwin") app.quit(); });
+
+app.on("activate", () => { if (!window) create(); });
+
+ipcMain.on("podcast::search", (event, arg) => {
+    // Podcast Search stuff
 });
 
-app.on("activate", () => {
-    if (!window) create();
-});
-
-ipcMain.on("podcast-search", (event, arg) => {
-    console.log("A search was started:", arg);
-});
-
-ipcMain.on("podcast-add", (event, url) => {
+ipcMain.on("podcast::add", (event, url) => {
     request.get(url).then(r => {
         parsePodcast(r.text, (err, data) => {
             if (err) return window.send("err-reset", err);
-
-            if (!storage.podcasts) storage.podcasts = [];
 
             const podcasts = storage.podcasts;
             podcasts.push({ title: data.title, url });
 
             storage.podcasts = podcasts;
 
-            window.send("podcast-list", storage.podcasts);
+            window.send("podcast-list::reload", null);
         });
 
     }).catch(err => window.send("err-reset", err));
 });
 
-ipcMain.on("podcast-remove", (event, url) => {
+ipcMain.on("podcast::remove", (event, url) => {
     const list = storage.podcasts;
 
     const newList = list.filter(p => p.url !== url);
 
     storage.podcasts = newList;
 
-    window.send("podcast-list", storage.podcasts);
+    window.send("podcast-list::reload", null);
 });
 
-ipcMain.on("podcast-load", (event, url) => {
+ipcMain.on("podcast::load", (event, url) => {
     request.get(url).then(r => {
         parsePodcast(r.text, (err, data) => {
             if (err) return window.send("err-reset", err);
 
-            window.send("podcast-open", data);
+            window.send("podcast::open", data);
         });
 
     }).catch(err => window.send("err-reset", err));
