@@ -1,7 +1,8 @@
 const { remote: { BrowserWindow }, ipcRenderer } = require("electron");
-const storage = require("fraktal-storage");
 
 const bWindow = BrowserWindow.getFocusedWindow();
+const storage = bWindow.storage;
+
 setTimeout(() => $(".cover").fadeOut(2000), 500);
 
 let audio;
@@ -101,7 +102,7 @@ function play(element) {
     audio.onended = () => {
         const newAudio = $(`#podcast-data-episodes li a[podcast-id="${id - 1}"]`);
 
-        if (!newAudio) return $("#audio-box").empty();
+        if (!newAudio.length) return $("#audio-box").empty();
 
         play(newAudio);
     };
