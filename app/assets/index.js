@@ -54,6 +54,7 @@ function play(element) {
     const id = elem.attr("podcast-id");
     const title = elem.attr("podcast-title");
     const url = elem.attr("podcast-url");
+    // Rename Title to Current and make Title the Podcast name
 
     audioContainer.empty();
 
@@ -67,6 +68,8 @@ function play(element) {
     const audio = audioContainer.children("audio")[0];
 
     audio.play();
+
+    //ipcRenderer.send("podcast::play", {title, current});
 
     audio.onvolumechange = function() {
         storage.settings.volume = audio.volume;

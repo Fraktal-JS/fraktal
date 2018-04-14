@@ -2,6 +2,7 @@ const { app, BrowserWindow, ipcMain } = require("electron");
 const storage = require("fraktal-storage");
 const request = require("snekfetch");
 const parsePodcast = require("node-podcast-parser");
+//const dRPC = new ( require('discord-rpc').Client )({ transport: 'ipc' });
 
 const path = require("path");
 const url = require("url");
@@ -53,6 +54,18 @@ app.on("window-all-closed", () => { if (process.platform !== "darwin") app.quit(
 
 app.on("activate", () => { if (!window) create(); });
 
+/*ipcMain.on("podcast::play", (event, arg) => {
+    const startTimestamp = new Date();
+    if (!dRPC || !window) return;
+    dRPC.setActivity({
+        details: arg.title,
+        state: arg.current,
+        startTimestamp,
+        largeImageKey: 'fraktal',
+        largeImageText: 'Fraktal: A Podcast Manager'
+    });
+});*/
+
 ipcMain.on("podcast::search", (event, arg) => {
     // Podcast Search stuff
 });
@@ -93,3 +106,5 @@ ipcMain.on("podcast::load", (event, url) => {
 
     }).catch(err => window.send("err-reset", err));
 });
+
+//dRPC.login('434490770611896320').catch(console.error);
