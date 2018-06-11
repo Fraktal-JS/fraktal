@@ -30,6 +30,8 @@
     "globals": {
         "$": true,
         "document": true,
-        "location": true
+        "location": true,
+        "startUpdates": true,
+        "updateProgress": true
     }
 }

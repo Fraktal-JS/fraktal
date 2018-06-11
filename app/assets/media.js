@@ -1,8 +1,62 @@
-$(document).ready(() => {
+function updateProgress() {
+    const audio = $("#media audio");
+    $("#media-progress input").css("background-size", `${(100 / audio[0].duration) * audio[0].currentTime}% 100%`);
+    $("#media-progress input").val((100 / audio[0].duration) * audio[0].currentTime);
+}
 
-});
+function editProgress() {
+    const audio = $("#media audio");
+    const input = $("#media #media-controls #media-progress input");
+
+    audio[0].pause();
+    $("#media-progress input").css("background-size", `${(100 / audio[0].duration) * input.val()}% 100%`);
+    audio[0].duration = input.val();
+    audio[0].play();
+}
+
+function mediaTogglePlay() {
+
+}
+
+function mediaStop() {
+
+}
+
+function mediaToggleVolume() {
+    const audio = $("#media audio")[0];
+
+    if (audio.muted) {
+        $("#media audio")[0].muted = false;
+        $("#mctrl-volume #muted").css("display", "none");
+        $("#mctrl-volume #unmuted").css("display", "");
+    } else {
+        $("#media audio")[0].muted = true;
+        $("#mctrl-volume #muted").css("display", "");
+        $("#mctrl-volume #unmuted").css("display", "none");
+    }
+}
+
+$(document).ready(() => {});
 
 /*var mediaPlayer;
+
+document.addEventListener("DOMContentLoaded", function() {
+    initialiseMediaPlayer();
+    mediaPlayer.addEventListener('timeupdate', updateProgressBar, false);
+    mediaPlayer.addEventListener('play', function() {
+        var btn = document.getElementById('play-pause-button');
+        changeButtonType(btn, 'pause');
+    }, false);
+    mediaPlayer.addEventListener('pause', function() {
+        var btn = document.getElementById('play-pause-button');
+        changeButtonType(btn, play);
+    }, false);
+    mediaPlayer.addEventListener('volumechange', function(e) {
+        var btn = document.getElementById('mute-button');
+        if (mediaPlayer.muted) changeButtonType(btn, 'unmute');
+        else changeButtonType(btn, 'mute');
+    }, false);
+}, false)
 
 function initialiseMediaPlayer() {
     mediaPlayer = document.getElementById('media-video');
@@ -72,21 +126,5 @@ function updateProgressBar() {
     progressBar.innerHTML = percentage + '% played';
 }
 
-document.addEventListener("DOMContentLoaded", function() {
-    initialiseMediaPlayer();
-    mediaPlayer.addEventListener('timeupdate', updateProgressBar, false);
-    mediaPlayer.addEventListener('play', function() {
-        var btn = document.getElementById('play-pause-button');
-        changeButtonType(btn, 'pause');
-    }, false);
-    mediaPlayer.addEventListener('pause', function() {
-        var btn = document.getElementById('play-pause-button');
-        changeButtonType(btn, play);
-    }, false);
-    mediaPlayer.addEventListener('volumechange', function(e) {
-        var btn = document.getElementById('mute-button');
-        if (mediaPlayer.muted) changeButtonType(btn, 'unmute');
-        else changeButtonType(btn, 'mute');
-    }, false);
-}, false)
+
 */
