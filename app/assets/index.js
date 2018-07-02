@@ -60,6 +60,11 @@ function play(element) {
 
     $("#media audio source").attr("src", url);
 
+    $("#media-information").html(`<p><b>Now Playing:</b> ${podcast} | ${title}</p>`);
+
+    $("#mctrl-play #paused").css("display", "none");
+    $("#mctrl-play #playing").css("display", "");
+
     audio.attr("podcast-id", id);
 
     audio[0].load();

@@ -43,6 +43,15 @@ function create() {
     window.once("ready-to-show", () => window.show());
 }
 
+function resetRPC() { 
+    rpc.setActivity({
+        details: "Browsing podcasts...",
+        startTimestamp: new Date(),
+        largeImageKey: "fraktal",
+        largeImageText: "Fraktal: A Podcast Manager"
+    });
+}
+
 app.on("ready", () => {
     if (!storage.settings) storage.settings = { volume: 0.25 };
     if (!storage.podcasts) storage.podcasts = [];
@@ -95,6 +104,8 @@ ipcMain.on("podcast::load", (event, url) => {
     }).catch(err => window.send("err-reset", err));
 });
 
+ipcMain.on("podcast::rpcReset", () =>  resetRPC());
+
 ipcMain.on("podcast::play", (event, arg) => {
     if (!rpc) return;
     
@@ -107,4 +118,6 @@ ipcMain.on("podcast::play", (event, arg) => {
     });
 });
 
-rpc.login("434490770611896320").catch(console.error);
+rpc.login("434490770611896320")
+    .then(() => resetRPC())
+    .catch(console.error);
