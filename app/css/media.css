@@ -1,4 +1,6 @@
 #media {
+    background-color: #fafafa;
+    height: 60px;
     width: 100%;
 }
 
@@ -6,9 +8,17 @@
     display: none;
 }
 
+#media #media-information p {
+    display: block;
+    height: 30px;
+    margin: 0;
+    padding: 0 15px;
+    text-align: center;
+    line-height: 30px;
+}
+
 #media #media-controls {
     display: flex;
-    background-color: #fafafa;
     height: 30px;
 }
 
@@ -31,14 +41,14 @@
     width: 100%;
     height: 10px;
     margin: 10px 0;
-    background-color: #d3d3d3; 
+    background-color: #d3d3d3;
     background-size: 0% 100%;
     background-repeat: no-repeat;
     background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #343a40), color-stop(100%, #343a40));
 }
 
 #media #media-controls .media-range input:focus {
-    outline:0 !important;
+    outline: 0 !important;
 }
 
 #media #media-controls .media-range input::-webkit-slider-thumb {

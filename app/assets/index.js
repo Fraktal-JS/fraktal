@@ -47,37 +47,34 @@ function addPodcast() {
 }
 
 function play(element) {
-    const audioContainer = $("#audio-box");
+    const media = $("#media");
+    const audio = $("#media audio");
 
     const elem = $(element);
 
-    const id = elem.attr("podcast-id");
-    const title = elem.attr("podcast-title");
-    const url = elem.attr("podcast-url");
-    // Rename Title to Current and make Title the Podcast name
+    const podcast = elem.attr("podcast-title");
 
-    audioContainer.empty();
+    const id = elem.attr("episode-id");
+    const title = elem.attr("episode-title");
+    const url = elem.attr("episode-url");
 
-    audioContainer.append(`
-        <p><b>Now Playing:</b> ${title}</p>
-        <audio controls id="audio-play" podcast-id="${id}" onloadstart="this.volume=storage.settings.volume">
-            <source src="${url}" type="audio/mpeg">
-        </audio>
-    `);
+    $("#media audio source").attr("src", url);
 
-    const audio = audioContainer.children("audio")[0];
+    $("#media-information").html(`<p><b>Now Playing:</b> ${podcast} | ${title}</p>`);
 
-    audio.play();
+    $("#mctrl-play #paused").css("display", "none");
+    $("#mctrl-play #playing").css("display", "");
 
-    //ipcRenderer.send("podcast::play", {title, current});
+    audio.attr("podcast-id", id);
 
-    audio.onvolumechange = function() {
-        storage.settings.volume = audio.volume;
-    };
+    audio[0].load();
+    audio[0].play();
 
-    audio.onended = () => {
-        const newAudio = $(`#podcast-data-episodes li a[podcast-id="${id - 1}"]`);
-        if (!newAudio.length) return audioContainer.empty();
+    ipcRenderer.send("podcast::play", { title, podcast });
+
+    audio[0].onended = () => {
+        const newAudio = $(`#podcast-data-episodes li a[episode-id="${id - 1}"]`);
+        if (!newAudio.length) return audio[0].empty();
 
         play(newAudio);
     };
@@ -140,7 +137,7 @@ $(document).ready(() => {
             if (e.enclosure) {
                 $('#podcast-data-episodes').append(
                     `<li class="nav-item podcast-data-episode-link">
-                <a class="nav-link" podcast-id="${interval}" podcast-title="${e.title}" podcast-url="${e.enclosure.url}" onclick="play(this)">
+                <a class="nav-link" podcast-title="${data.title}" episode-id="${interval}" episode-title="${e.title}" episode-url="${e.enclosure.url}" onclick="play(this)">
                     ${e.title}
                 </a>
             </li>`
@@ -150,5 +147,18 @@ $(document).ready(() => {
         }
 
         $("#podcast-data").css("display", "block");
+    });
+
+    $("#media-progress input").val(0);
+    $("#media-progress input").css("background-size", `${$("#media-progress input").val()}% 100%`);
+
+    $("#media-volume input").val(bWindow.storage.settings.volume * 100);
+    $("#media-volume input").css("background-size", `${bWindow.storage.settings.volume * 100}% 100%`);
+
+    $("#media-progress input").on("input", () => {
+        $("#media-progress input").css("background-size", `${$("#media-progress input").val()}% 100%`);
+    });
+    $("#media-volume input").on("input", () => {
+        $("#media-volume input").css("background-size", `${$("#media-volume input").val()}% 100%`);
     });
 });

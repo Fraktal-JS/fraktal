@@ -75,22 +75,47 @@
                     </div>
                 </div>
             </nav>
-            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4 scroll main-nopadding">
-                <div class="main-padding">
-                    <div id="main">
-                        <h3>Hello there!</h3>
-                        <p>Welcome to Fraktal, the new and soon-to-be best podcast management application. You can use this
-                            to keep track of and download your favorite podcasts.
-                            <p>
-                    </div>
-                    <div id="podcast-data" style="display: none;">
-                        <h2 id="podcast-data-title"></h2>
-                        <h5 id="podcast-data-description"></h5>
-                        <ul id="podcast-data-episodes"></ul>
-                    </div>
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4 scroll main">
+                <div id="main">
+                    <h3>Hello there!</h3>
+                    <p>Welcome to Fraktal, the new and soon-to-be best podcast management application. You can use this to keep
+                        track of and download your favorite podcasts.
+                        <p>
                 </div>
-                <div id="audio-box"></div>
+                <div id="podcast-data" style="display: none;">
+                    <h2 id="podcast-data-title"></h2>
+                    <h5 id="podcast-data-description"></h5>
+                    <ul id="podcast-data-episodes"></ul>
+                </div>
             </main>
+        </div>
+        <div class="fixed-bottom" id="media">
+            <audio controls onloadstart="this.volume=storage.settings.volume" ontimeupdate="updateProgress()">
+                <source type="audio/mpeg">
+            </audio>
+            <div id="media-information">
+                <p>
+                    <b>Now Playing:</b> Nothing</p>
+            </div>
+            <div id="media-controls">
+                <a class="media-control" id="mctrl-play" onclick="mediaTogglePlay()">
+                    <i class="fas fa-play-circle" id="paused"></i>
+                    <i class="fas fa-pause-circle" id="playing" style="display: none;"></i>
+                </a>
+                <a class="media-control" id="mctrl-stop" onclick="mediaStop()">
+                    <i class="fas fa-stop-circle"></i>
+                </a>
+                <div class="media-range" id="media-progress">
+                    <input type="range" min="0" max="100" value="0" class="slider" step="0.0001" oninput="editProgress()">
+                </div>
+                <a class="media-control" id="mctrl-volume" onclick="mediaToggleVolume()">
+                    <i class="fas fa-volume-up" id="unmuted"></i>
+                    <i class="fas fa-volume-off" id="muted" style="display: none;"></i>
+                </a>
+                <div class="media-range" id="media-volume">
+                    <input type="range" min="0" max="100" value="100" class="slider" step="0.0001" oninput="bWindow.storage.settings.volume = this.value / 100; $('#media audio')[0].volume = this.value / 100;">
+                </div>
+            </div>
         </div>
     </div>
 

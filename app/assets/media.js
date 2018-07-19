@@ -1,8 +1,86 @@
-$(document).ready(() => {
+function updateProgress() {
+    const audio = $("#media audio")[0];
 
-});
+    $("#media-progress input")
+        .val((100 / audio.duration) * audio.currentTime)
+        .css("background-size", `${(100 / audio.duration) * audio.currentTime}% 100%`);
+}
+
+function editProgress() {
+    const audio = $("#media audio")[0];
+    const input = $("#media #media-controls #media-progress input");
+
+    if (!$("#media audio source").attr('src')) return;
+
+    audio.pause();
+    $("#media-progress input").css("background-size", `${(100 / audio.duration) * input.val()}% 100%`);
+    audio.currentTime = (input.val() * 0.01) * audio.duration;
+    audio.play();
+}
+
+function mediaTogglePlay() {
+    const audio = $("#media audio")[0];
+    if (!$("#media audio source").attr('src')) return;
+
+    audio.paused ? audio.play() : audio.pause();
+
+    $("#mctrl-play #paused").css("display", audio.paused ? "" : "none");
+    $("#mctrl-play #playing").css("display", audio.paused ? "none" : "");
+}
+
+function mediaStop() {
+    const audio = $("#media audio")[0];
+    $("#media-information").html(`<p><b>Now Playing:</b> Nothing</p>`);
+
+    audio.pause();
+    $("#media audio source").attr("src", null);
+    audio.load();
+
+    $("#mctrl-play #paused").css("display", "");
+    $("#mctrl-play #playing").css("display", "none");
+    
+    $("#media-progress input")
+        .val(0)
+        .css("background-size", `0% 100%`);
+    
+    ipcRenderer.send("podcast::rpcReset"); // eslint-disable-line
+}
+
+function mediaToggleVolume() {
+    const audio = $("#media audio")[0];
+
+    if (audio.muted) {
+        $("#media audio")[0].muted = false;
+        $("#mctrl-volume #muted").css("display", "none");
+        $("#mctrl-volume #unmuted").css("display", "");
+    } else {
+        $("#media audio")[0].muted = true;
+        $("#mctrl-volume #muted").css("display", "");
+        $("#mctrl-volume #unmuted").css("display", "none");
+    }
+}
+
+$(document).ready(() => {});
 
 /*var mediaPlayer;
+
+document.addEventListener("DOMContentLoaded", function() {
+    initialiseMediaPlayer();
+    mediaPlayer.addEventListener('timeupdate', updateProgressBar, false);
+    mediaPlayer.addEventListener('play', function() {
+        var btn = document.getElementById('play-pause-button');
+        changeButtonType(btn, 'pause');
+    }, false);
+    mediaPlayer.addEventListener('pause', function() {
+        var btn = document.getElementById('play-pause-button');
+        changeButtonType(btn, play);
+    }, false);
+    mediaPlayer.addEventListener('volumechange', function(e) {
+        var btn = document.getElementById('mute-button');
+        if (mediaPlayer.muted) changeButtonType(btn, 'unmute');
+        else changeButtonType(btn, 'mute');
+    }, false);
+}, false)
 
 function initialiseMediaPlayer() {
     mediaPlayer = document.getElementById('media-video');
@@ -72,21 +150,5 @@ function updateProgressBar() {
     progressBar.innerHTML = percentage + '% played';
 }
 
-document.addEventListener("DOMContentLoaded", function() {
-    initialiseMediaPlayer();
-    mediaPlayer.addEventListener('timeupdate', updateProgressBar, false);
-    mediaPlayer.addEventListener('play', function() {
-        var btn = document.getElementById('play-pause-button');
-        changeButtonType(btn, 'pause');
-    }, false);
-    mediaPlayer.addEventListener('pause', function() {
-        var btn = document.getElementById('play-pause-button');
-        changeButtonType(btn, play);
-    }, false);
-    mediaPlayer.addEventListener('volumechange', function(e) {
-        var btn = document.getElementById('mute-button');
-        if (mediaPlayer.muted) changeButtonType(btn, 'unmute');
-        else changeButtonType(btn, 'mute');
-    }, false);
-}, false)
+
 */
