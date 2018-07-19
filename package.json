@@ -1,6 +1,6 @@
 {
     "name": "fraktal",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "description": "Podcast Manager in Electron",
     "main": "app/index.js",
     "scripts": {
@@ -61,13 +61,14 @@
             }
         }
     },
-    "devDependencies": {
-        "devtron": "^1.4.0",
-        "electron": "^1.8.4",
-        "electron-builder": "^20.8.1",
+    "dependencies": {
         "discord-rpc": "^3.0.0-beta.10",
         "fraktal-storage": "github:fraktal-js/fraktal-storage",
         "node-podcast-parser": "^2.1.0",
         "snekfetch": "^3.6.4"
+    },
+    "devDependencies": {
+        "devtron": "^1.4.0",
+        "electron-builder": "^20.8.1"
     }
 }
